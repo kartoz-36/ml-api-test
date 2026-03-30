@@ -22,14 +22,18 @@ def train_model():
     #fix the file read path
     data = pd.read_csv("data/sample.csv")
     print("Data: ", data.head())
-
-
     """
     - prepare the data for training the model
     - split the data into training and testing sets
     - train the model
     - return the model
     """
-
-    return data
-    
+    X = data.drop("target",axis=1)
+    Y = data["target"]
+    x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model = RandomForestClassifier(random_state=42)
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    print("Accuracy: ", round(accuracy,4)*100,'%')
+    return model
