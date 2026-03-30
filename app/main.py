@@ -1,7 +1,7 @@
 import uvicorn
 from typing import Any
 from fastapi import FastAPI, HTTPException
-from app.model import prepare_user_sent_data, train_model, predict_one
+from app.model import prepare_user_sent_data, train_model
 app = FastAPI()
 model = None
 
@@ -15,8 +15,8 @@ def load_model():
 @app.post("/predict")
 def predict(body: dict[str, Any]):
     try:
-        #convert the user sent data to a dataframe same as the training data
-        result = prepare_user_sent_data(body) # dont edit this line 
+       
+        result = prepare_user_sent_data(body)
         """
         - predict the result
         - prediction = model.predict(result)
@@ -25,7 +25,10 @@ def predict(body: dict[str, Any]):
  
         """
 
-       
+        prediction = model.predict(result)
+        message = "You are passed" if int(prediction[0]) == 1 else "You are failed"
+        return {"result": message}
+
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
 
