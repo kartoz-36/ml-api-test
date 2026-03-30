@@ -1,7 +1,7 @@
 import uvicorn
 from typing import Any
 from fastapi import FastAPI, HTTPException
-from app.model import prepare_user_sent_data, train_model, predict_one
+from app.model import prepare_user_sent_data, train_model #predict_one
 app = FastAPI()
 model = None
 
@@ -21,9 +21,11 @@ def predict(body: dict[str, Any]):
         - predict the result
         - prediction = model.predict(result)
         - return the result in the format of "You are passed" or "You are failed"
-        return {"result": youre passed if prediction[0] == 1 else "You are failed"}
+        return {"result": "You are passed" if prediction[0] == 1 else "You are failed"}
  
         """
+        prediction = model.predict(result)
+        return {"result": "You are passed" if prediction[0] == 1 else "You are failed"}
 
        
     except ValueError as e:
